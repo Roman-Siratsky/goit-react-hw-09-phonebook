@@ -1,9 +1,11 @@
 import { Toolbar, Typography } from '@material-ui/core'
 import { NavLink } from 'react-router-dom'
+import routes from '../routes'
+
 const AuthMenu = () => {
   return (
     <Toolbar>
-            <NavLink className='navLink' to='/register'>
+            <NavLink className='navLink' to={`${routes.gh}/register`}>
               <Typography
                 variant="h6"
                 color="inherit"
@@ -11,7 +13,7 @@ const AuthMenu = () => {
               Register
             </Typography>
             </NavLink>
-            <NavLink className='navLink' to='/login'>
+            <NavLink className='navLink' to={`${routes.gh}/login`}>
               <Typography
                 variant="h6"
                 color="inherit"

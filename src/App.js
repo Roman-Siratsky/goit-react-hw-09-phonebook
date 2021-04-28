@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react'
-import { Component } from 'react';
 import Contacts from './components/Contacts'
 import './sass/main.scss'
 import Header from './components/Header'
@@ -11,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import PublicRoute from './components/PublicRoute'
 import PrivateRoute from './components/PrivateRoute'
 import Home from './components/Home'
-
+import routes from './routes'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -26,24 +25,25 @@ const App = () => {
         <div className='whole_app'>
           <Switch>
           <PublicRoute
-            exact path='/'
+            exact path={`${routes.gh}/`}
             component={Home}
           />
           <PrivateRoute
-            path='/contacts'
+            path={`${routes.gh}/contacts`}
             component={Contacts}
-            redirectTo='/login'
+            redirectTo={`${routes.gh}/login`}
           />
           <PublicRoute
-            path='/register'
+            path={`${routes.gh}/register`}
             component={Register}
-            restricted redirectTo='/contacts'
+            restricted
+            redirectTo={`${routes.gh}/contacts`}
           />
           <PublicRoute
-            path='/login'
+            path={`${routes.gh}/login`}
             component={Login}
             restricted
-            redirectTo='contacts'
+            redirectTo={`${routes.gh}/contacts`}
           />
         </Switch>
         </div>

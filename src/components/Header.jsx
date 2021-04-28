@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import UserMenu from './UserMenu'
 import {getIsAuthorized, getUserName} from '../redux/authorization/authSelectors'
 import AuthMenu from './AuthMenu'
+import routes from '../routes'
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -27,7 +28,7 @@ const Header = () => {
         <AppBar className={classes.appBar} position="relative"> 
           <Toolbar>
             <ContactsIcon />
-            <NavLink className='navLink' to='/'>
+            <NavLink className='navLink' to={`${routes.gh}`}>
               <Typography
                 variant="h6"
                 color="inherit"
@@ -35,7 +36,7 @@ const Header = () => {
               Home
             </Typography>
             </NavLink>
-            {isLoggedIn && <NavLink className='navLink' to='/contacts'>
+            {isLoggedIn && <NavLink className='navLink' to={`${routes.gh}/contacts`}>
               <Typography
                 variant="h6"
                 color="inherit"
