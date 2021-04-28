@@ -1,10 +1,11 @@
 import React from 'react'
 import { Toolbar, Typography, Button } from '@material-ui/core'
 import { logOut } from '../redux/authorization/authOperations'
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom'
 
 const UserMenu = (props) => {
+  const dispatch = useDispatch()
   return (
     <Toolbar>
               <Typography
@@ -19,7 +20,7 @@ const UserMenu = (props) => {
                 color="primary"
           noWrap
           type='button'
-                onClick={props.logOut}
+                onClick={() => dispatch(logOut())}
               >
               Logout
             </Button>
@@ -27,8 +28,4 @@ const UserMenu = (props) => {
     </Toolbar>
   )
 }
-const mapDispatchToProps = dispatch => ({
-  logOut: () => dispatch(logOut())
-}) 
-
-export default connect(null, mapDispatchToProps)(UserMenu)
+export default UserMenu

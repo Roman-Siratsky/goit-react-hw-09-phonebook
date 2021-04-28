@@ -1,38 +1,33 @@
-import React, { Component } from 'react'
-import {connect } from 'react-redux'
+import React, { useState } from 'react'
+import {useDispatch, useSelector } from 'react-redux'
 import { editContact, fetchContacts } from '../redux/phoneBook/phoneBookOperations'
 import { getContacts } from '../redux/phoneBook/phoneBookSelectors'
-import { TextField, Button, Input } from '@material-ui/core'
+import { TextField, Button } from '@material-ui/core'
 
-class EditContactForm extends Component{
-    state = {
-        name: '',
-        number: '+38'
-    }
-    handleNameChange = (event) => {
-        const {name, value} = event.currentTarget
-        this.setState({ [name]: value })
-    }
-    handleNumberChange = (event) => {
-        const {name, value} = event.currentTarget
-        this.setState({[name]: value})
-    }
-    onExistingContactAlert = (event) => {
-        event.preventDefault()
-        this.setState({name: '', number: '+38'})
-        alert(this.state.name + ' уже есть в списке контактов')
-    }
-
-    getSomeOfName = (name) => {
-        const optimizedContactName = name.toLowerCase();
-        return this.props.contacts.some(({name}) => name.toLowerCase() === optimizedContactName)
-      }
+const EditContactForm = (props) => {
     
-    render() {
-        const {handleNameChange, handleNumberChange} = this
-        const { editContact, contactId } = this.props
-        const { name, number } = this.state
-        const existingContact = this.getSomeOfName(name)
+    const dispatch = useDispatch()
+    const contacts = useSelector(getContacts)
+    const [name, setName] = useState('')
+    const [number, setNumber] = useState('+38')
+
+    const handleNameChange = e => {
+        setName(e.currentTarget.value)
+    }
+    const handleNumberChange = e => {
+        setNumber(e.currentTarget.value)
+    }
+    const onExistingContactAlert = e => {
+        e.preventDefault()
+        setName('')
+        setNumber('')
+        alert(name + ' уже есть в списке контактов')
+    }
+    const getSomeOfName = (name) => {
+        const optimizedContactName = name.toLowerCase();
+        return contacts.some(({name}) => name.toLowerCase() === optimizedContactName)
+     }
+ 
     return (
         <form className='edit-form'>
             <div>
@@ -64,14 +59,16 @@ class EditContactForm extends Component{
                         ? false
                         : true
                     }
-                        onClick={existingContact
-                            ? this.onExistingContactAlert 
+                        onClick={getSomeOfName(name)
+                            ? onExistingContactAlert 
                             : (e) => {
                                 e.preventDefault()
-                                editContact(contactId, { name, number})
-                                this.setState({ name: '', number: '+38' })
-                                this.props.toggleModal()
-                                this.props.fetchContacts()
+                                dispatch(editContact(props.contactId,{name, number}))
+                                // editContact(props.contactId, { name, number})
+                                setName('')
+                                setNumber('')
+                                props.toggleModal()
+                                dispatch(fetchContacts())
                     }}
                 >
                 Изменить
@@ -79,14 +76,6 @@ class EditContactForm extends Component{
             </div>
             </form>
         )
-    }
+    // }
 }
-const mapDispatchToProps = dispatch => ({
-    editContact: (id, credentials) => dispatch(editContact(id, credentials)),
-    fetchContacts: () => dispatch(fetchContacts())
-})
-const mapStateToProps = (state) => ({
-    contacts: getContacts(state)
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditContactForm);
+export default EditContactForm;

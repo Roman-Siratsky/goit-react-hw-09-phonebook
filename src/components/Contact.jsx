@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import {useDispatch} from 'react-redux'
 import { Button, Card, CardActions, CardContent, CardMedia, makeStyles, Typography } from '@material-ui/core';
 import PhoneIcon from '@material-ui/icons/Phone';
 import Modal from './Modal'
+import { deleteContact } from '../redux/phoneBook/phoneBookOperations';
 import EditContactForm from './EditContactForm'
 
 const useStyles = makeStyles((theme) => ({
@@ -14,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Contact = ({ contact, index, onDeleteContact, onEditContact }) => {
+const Contact = ({ contact, index }) => {
+  const dispatch = useDispatch()
   const classes = useStyles()
   const [modal, setModal] = useState(false)
   const [currentId, setCurrentId] = useState(null)
@@ -47,7 +50,7 @@ const Contact = ({ contact, index, onDeleteContact, onEditContact }) => {
               variant="contained"
               color="primary"
               type='button'
-              onClick={() => onDeleteContact(contact.id)}
+              onClick={() => dispatch(deleteContact(contact.id))}
             >
             Delete
             </Button>

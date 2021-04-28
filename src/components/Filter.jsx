@@ -1,6 +1,6 @@
 import { TextField } from '@material-ui/core'
 import React from 'react'
-import {connect} from 'react-redux'
+import { useDispatch, useSelector} from 'react-redux'
 import { changeFilter } from '../redux/phoneBook/phoneBookActions'
 import { getFilter } from '../redux/phoneBook/phoneBookSelectors'
 import { makeStyles } from '@material-ui/core'
@@ -12,8 +12,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Filter = (props) => {
-  window.props = props
+const Filter = () => {
+  const value = useSelector(getFilter)
+  const dispatch = useDispatch()
   const classes = useStyles()
   return (
     <TextField
@@ -21,20 +22,12 @@ const Filter = (props) => {
       name='filter'
       type='text'
       placeholder='Search contacts'
-      value={props.value}
+      value={value}
       variant="outlined"
       autoComplete='off'
-      onChange={props.handleFilterChange}
+      onChange={(e) => dispatch(changeFilter(e.currentTarget.value))}
       />
     )
 }
+export default Filter;
 
-const mapStateToProps = (state) => ({
-  value: getFilter(state)
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  handleFilterChange: (e) => dispatch(changeFilter(e.currentTarget.value))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);

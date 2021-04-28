@@ -3,7 +3,7 @@ import { CssBaseline, AppBar, Toolbar, Typography} from '@material-ui/core'
 import ContactsIcon from '@material-ui/icons/Contacts';
 import { NavLink } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core'
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import UserMenu from './UserMenu'
 import {getIsAuthorized, getUserName} from '../redux/authorization/authSelectors'
 import AuthMenu from './AuthMenu'
@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const Header = (props) => {
+const Header = () => {
+  const isLoggedIn = useSelector(getIsAuthorized)
+  const userName = useSelector(getUserName)
   const classes = useStyles()
     return (
         <>
@@ -33,7 +35,7 @@ const Header = (props) => {
               Home
             </Typography>
             </NavLink>
-            {props.isLoggedIn && <NavLink className='navLink' to='/contacts'>
+            {isLoggedIn && <NavLink className='navLink' to='/contacts'>
               <Typography
                 variant="h6"
                 color="inherit"
@@ -42,14 +44,14 @@ const Header = (props) => {
             </Typography>
             </NavLink>}
           </Toolbar>
-          {props.isLoggedIn ? <UserMenu userName={props.userName}/> : <AuthMenu/>}
+          {isLoggedIn ? <UserMenu userName={userName}/> : <AuthMenu/>}
           </AppBar>
         </>
     )
 }
-
-const mapStateToProps = (state) => ({
-  isLoggedIn: getIsAuthorized(state),
-  userName: getUserName(state)
-})
-export default connect(mapStateToProps)(Header)
+export default Header
+// const mapStateToProps = (state) => ({
+//   isLoggedIn: getIsAuthorized(state),
+//   userName: getUserName(state)
+// })
+// export default connect(mapStateToProps)(Header)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Component } from 'react';
 import Contacts from './components/Contacts'
 import './sass/main.scss'
@@ -7,19 +7,20 @@ import { Switch } from 'react-router';
 import Register from './components/Register'
 import Login from './components/Login'
 import {getCurrentUser} from './redux/authorization/authOperations'
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PublicRoute from './components/PublicRoute'
 import PrivateRoute from './components/PrivateRoute'
 import Home from './components/Home'
 
 
-class App extends Component {
+const App = () => {
+  const dispatch = useDispatch()
 
-  componentDidMount() {
-    this.props.onGetCurrentUser()
-  }
-  render() {
-    return (
+  useEffect(() => {
+    dispatch(getCurrentUser())
+  }, [])
+
+  return (
     <>
         <Header />
         <div className='whole_app'>
@@ -48,11 +49,11 @@ class App extends Component {
         </div>
       </>
   )
-  }
-} 
+}
+export default App;
 
 
-const mapDispatchToProps = (dispatch) => ({
-  onGetCurrentUser: () => dispatch(getCurrentUser())
-})
-export default connect(null, mapDispatchToProps)(App);
+// const mapDispatchToProps = (dispatch) => ({
+//   onGetCurrentUser: () => dispatch(getCurrentUser())
+// })
+// export default connect(null, mapDispatchToProps)(App);

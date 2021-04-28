@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import {TextField, Button} from '@material-ui/core'
-import { connect } from 'react-redux'
-import {register, login} from '../redux/authorization/authOperations' 
+import { useDispatch } from 'react-redux'
+import {register} from '../redux/authorization/authOperations' 
 //ProezdPoMostu
 //Proezd1010
 const Register = (props) => {
 
+    const dispatch = useDispatch()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -24,7 +25,7 @@ const Register = (props) => {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        props.registerUser({name, email, password})
+        dispatch(register({name, email, password}))
         setName('')
         setEmail('')
         setPassword('')
@@ -78,10 +79,4 @@ const Register = (props) => {
     </div>
   )
 }
-
-
-const mapDispatchToProps = (dispatch) => ({
-    registerUser: (data) => dispatch(register(data)) 
-})
-
-export default connect(null, mapDispatchToProps)(Register)
+export default Register

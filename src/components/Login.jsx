@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { TextField, Button } from '@material-ui/core'
 import {login} from '../redux/authorization/authOperations'
-import { connect } from 'react-redux'
-// import { PinDropSharp } from '@material-ui/icons'
+import { useDispatch } from 'react-redux'
 
 const Login = (props) => {
-
+    const dispatch = useDispatch()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -19,7 +18,7 @@ const Login = (props) => {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        props.loginUser({email, password})
+        dispatch(login({email, password}))
         setEmail('')
         setPassword('')
     }
@@ -60,8 +59,4 @@ const Login = (props) => {
     </div>
   )
 }
-const mapDispatchToProps = (dispatch) => ({
-    loginUser: (data) => dispatch(login(data))
-}) 
-
-export default connect(null, mapDispatchToProps)(Login)
+export default Login
